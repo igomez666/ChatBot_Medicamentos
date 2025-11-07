@@ -31,9 +31,9 @@ st.markdown("Consulta información técnica sobre los siguientes medicamentos au
 # ────────────────────────────────────────
 
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.schema import Document
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.documents import Document
 import pandas as pd
 import requests
 import zipfile
@@ -60,8 +60,9 @@ load_environment()
 # Configuración de modelos (cached)
 @st.cache_resource
 def setup_models():
-    embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", temperature=0, max_tokens=50000)
+    # Requiere OPENAI_API_KEY en el entorno (.env o variable de entorno)
+    embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     return embedding_model, llm
 
 embedding_model, llm = setup_models()
